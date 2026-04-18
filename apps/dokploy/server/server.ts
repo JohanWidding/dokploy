@@ -52,9 +52,7 @@ void app.prepare().then(async () => {
 		setupDockerContainerLogsWebSocketServer(server);
 		setupDockerContainerTerminalWebSocketServer(server);
 		setupTerminalWebSocketServer(server);
-		if (!IS_CLOUD) {
-			setupDockerStatsMonitoringSocketServer(server);
-		}
+		setupDockerStatsMonitoringSocketServer(server);
 
 		server.listen(PORT, HOST);
 		console.log(`Server Started on: http://${HOST}:${PORT}`);
