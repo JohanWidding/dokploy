@@ -1,0 +1,10 @@
+--- a/apps/dokploy/server/server.ts
++++ b/apps/dokploy/server/server.ts
+@@ -52,9 +52,7 @@ void app.prepare().then(async () => {
+ 		setupDockerContainerLogsWebSocketServer(server);
+ 		setupDockerContainerTerminalWebSocketServer(server);
+ 		setupTerminalWebSocketServer(server);
+-		if (!IS_CLOUD) {
+-			setupDockerStatsMonitoringSocketServer(server);
+-		}
++		setupDockerStatsMonitoringSocketServer(server);
