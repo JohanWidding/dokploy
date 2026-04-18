@@ -26,6 +26,11 @@ jobs:
           cd dokploy
           patch -p1 < ../patches/patch/server.ts.patch
 
+      - name: Create .env.production
+        run: |
+          echo "PORT=3000" > dokploy/.env.production
+          echo "NODE_ENV=production" >> dokploy/.env.production
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
