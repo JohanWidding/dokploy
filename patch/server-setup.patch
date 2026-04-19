@@ -1,0 +1,48 @@
+--- a/packages/server/src/setup/server-setup.ts
++++ b/packages/server/src/setup/server-setup.ts
+@@ -72,28 +72,26 @@ export const serverSetup = async (
+ 		);
+ 		await installRequirements(serverId, onData);
+ 
+-		if (IS_CLOUD) {
+-			onData?.("\nConfiguring Monitoring: 🔄\n");
+-
+-			const baseUrl = await getDokployUrl();
+-			const token = generateToken();
+-			const urlCallback = `${baseUrl}/api/trpc/notification.receiveNotification`;
+-
+-			// Update server with monitoring configuration
+-			await updateServerById(serverId, {
+-				metricsConfig: {
+-					server: {
+-						...server.metricsConfig.server,
+-						token: token,
+-						urlCallback: urlCallback,
+-					},
+-					containers: server.metricsConfig.containers,
++		onData?.("\nConfiguring Monitoring: 🔄\n");
++
++		const baseUrl = await getDokployUrl();
++		const token = generateToken();
++		const urlCallback = `${baseUrl}/api/trpc/notification.receiveNotification`;
++
++		// Update server with monitoring configuration
++		await updateServerById(serverId, {
++			metricsConfig: {
++				server: {
++					...server.metricsConfig.server,
++					token: token,
++					urlCallback: urlCallback,
+ 				},
+-			});
++			containers: server.metricsConfig.containers,
++			},
++		});
+ 
+-			await setupMonitoring(serverId);
+-			onData?.("\nMonitoring Configured: ✅\n");
+-		}
++		await setupMonitoring(serverId);
++		onData?.("\nMonitoring Configured: ✅\n");
+ 
+ 		await updateDeploymentStatus(deployment.deploymentId, "done");
