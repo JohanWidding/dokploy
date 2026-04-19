@@ -1,0 +1,54 @@
+diff --git a/apps/dokploy/server/api/routers/admin.ts b/apps/dokploy/server/api/routers/admin.ts
+index 4323d9e..997fce1 100644
+--- a/apps/dokploy/server/api/routers/admin.ts
++++ b/apps/dokploy/server/api/routers/admin.ts
+@@ -13,13 +13,6 @@ export const adminRouter = createTRPCRouter({
+ 		.input(apiUpdateWebServerMonitoring)
+ 		.mutation(async ({ input }) => {
+ 			try {
+-				if (IS_CLOUD) {
+-					throw new TRPCError({
+-						code: "UNAUTHORIZED",
+-						message: "Feature disabled on cloud",
+-					});
+-				}
+-
+ 				await updateWebServerSettings({
+ 					metricsConfig: {
+ 						server: {
+diff --git a/apps/dokploy/server/wss/docker-stats.ts b/apps/dokploy/server/wss/docker-stats.ts
+index b5f2439..32ea710 100644
+--- a/apps/dokploy/server/wss/docker-stats.ts
++++ b/apps/dokploy/server/wss/docker-stats.ts
+@@ -4,7 +4,6 @@ import {
+ 	execAsync,
+ 	getHostSystemStats,
+ 	getLastAdvancedStatsFile,
+-	IS_CLOUD,
+ 	recordAdvancedStats,
+ 	validateRequest,
+ } from "@dokploy/server";
+@@ -34,11 +33,6 @@ export const setupDockerStatsMonitoringSocketServer = (
+ 	wssTerm.on("connection", async (ws, req) => {
+ 		const url = new URL(req.url || "", `http://${req.headers.host}`);
+ 
+-		if (IS_CLOUD) {
+-			ws.send("This feature is not available in the cloud version.");
+-			ws.close();
+-			return;
+-		}
+ 		const appName = url.searchParams.get("appName");
+ 		const appType = (url.searchParams.get("appType") || "application") as
+ 			| "application"
+diff --git a/apps/dokploy/server/server.ts b/apps/dokploy/server/server.ts
+index 1234567..abcdefg 100644
+--- a/apps/dokploy/server/server.ts
++++ b/apps/dokploy/server/server.ts
+@@ -52,9 +52,7 @@ void app.prepare().then(async () => {
+ 		setupDockerContainerLogsWebSocketServer(server);
+ 		setupDockerContainerTerminalWebSocketServer(server);
+ 		setupTerminalWebSocketServer(server);
+-		if (!IS_CLOUD) {
+-			setupDockerStatsMonitoringSocketServer(server);
+-		}
++		setupDockerStatsMonitoringSocketServer(server);
