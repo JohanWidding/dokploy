@@ -1,5 +1,13 @@
 --- a/packages/server/src/setup/server-setup.ts
 +++ b/packages/server/src/setup/server-setup.ts
+@@ -1,6 +1,6 @@
+ import path from "node:path";
+-import { IS_CLOUD, paths } from "@dokploy/server/constants";
++import { paths } from "@dokploy/server/constants";
+ import { getDokployUrl } from "@dokploy/server/services/admin";
+ import {
+ 	createServerDeployment,
+ 	updateDeploymentStatus,
 @@ -72,28 +72,26 @@ export const serverSetup = async (
  		);
  		await installRequirements(serverId, onData);
@@ -20,6 +28,12 @@
 -						urlCallback: urlCallback,
 -					},
 -					containers: server.metricsConfig.containers,
+-				},
+-			});
+-
+-			await setupMonitoring(serverId);
+-			onData?.("\nMonitoring Configured: ✅\n");
+-		}
 +		onData?.("\nConfiguring Monitoring: 🔄\n");
 +
 +		const baseUrl = await getDokployUrl();
@@ -33,16 +47,13 @@
 +					...server.metricsConfig.server,
 +					token: token,
 +					urlCallback: urlCallback,
- 				},
--			});
-+			containers: server.metricsConfig.containers,
++				},
++				containers: server.metricsConfig.containers,
 +			},
 +		});
- 
--			await setupMonitoring(serverId);
--			onData?.("\nMonitoring Configured: ✅\n");
--		}
++
 +		await setupMonitoring(serverId);
 +		onData?.("\nMonitoring Configured: ✅\n");
  
  		await updateDeploymentStatus(deployment.deploymentId, "done");
+ 
