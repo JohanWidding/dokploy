@@ -1,0 +1,25 @@
+--- a/apps/dokploy/components/dashboard/settings/servers/show-servers.tsx
++++ b/apps/dokploy/components/dashboard/settings/servers/show-servers.tsx
+@@ -163,15 +163,13 @@ export const ShowServers = () => {
+ 																						<ShowDockerContainersModal
+ 																							serverId={server.serverId}
+ 																						/>
+-																						{isCloud && (
+-																							<ShowMonitoringModal
+-																								url={`http://${server.ipAddress}:${server?.metricsConfig?.server?.port}/metrics`}
+-																								token={
+-																									server?.metricsConfig?.server
+-																										?.token
+-																								}
+-																							/>
+-																						)}
++																						<ShowMonitoringModal
++																							url={`http://${server.ipAddress}:${server?.metricsConfig?.server?.port}/metrics`}
++																							token={
++																								server?.metricsConfig?.server
++																									?.token
++																							}
++																						/>
+ 																						<ShowSwarmOverviewModal
+ 																							serverId={server.serverId}
+ 																						/>
