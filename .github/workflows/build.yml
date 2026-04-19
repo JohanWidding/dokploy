@@ -27,6 +27,7 @@ jobs:
           patch -p1 < ../patches/patch/server.ts.patch
           patch -p1 < ../patches/patch/monitoring.patch
           patch -p1 < ../patches/patch/show-servers.patch
+          patch -p1 < ../patches/patch/server-setup.patch
 
       - name: Create .env.production
         run: |
