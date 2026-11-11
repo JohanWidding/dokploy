@@ -13,13 +13,6 @@ export const adminRouter = createTRPCRouter({
 		.input(apiUpdateWebServerMonitoring)
 		.mutation(async ({ input }) => {
 			try {
-				if (IS_CLOUD) {
-					throw new TRPCError({
-						code: "UNAUTHORIZED",
-						message: "Feature disabled on cloud",
-					});
-				}
-
 				await updateWebServerSettings({
 					metricsConfig: {
 						server: {

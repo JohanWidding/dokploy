@@ -4,7 +4,6 @@ import {
 	execAsync,
 	getHostSystemStats,
 	getLastAdvancedStatsFile,
-	IS_CLOUD,
 	recordAdvancedStats,
 	validateRequest,
 } from "@dokploy/server";
@@ -34,11 +33,6 @@ export const setupDockerStatsMonitoringSocketServer = (
 	wssTerm.on("connection", async (ws, req) => {
 		const url = new URL(req.url || "", `http://${req.headers.host}`);
 
-		if (IS_CLOUD) {
-			ws.send("This feature is not available in the cloud version.");
-			ws.close();
-			return;
-		}
 		const appName = url.searchParams.get("appName");
 		const appType = (url.searchParams.get("appType") || "application") as
 			| "application"
